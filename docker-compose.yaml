@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  s-assignment:
+    image: s-assignment:0.0.1
+    build:
+      context: .
+      dockerfile: ./Dockerfile
