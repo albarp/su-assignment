@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using PurchaseCart.API.Models;
 
 namespace PurchaseCart.API.Controllers;
 
@@ -18,9 +19,16 @@ public class OrderController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet(Name = "GetOrders")]
-    public IEnumerable<string> Get()
+    [HttpPost]
+    public IActionResult CreateOrder([FromBody] OrderRequest request)
     {
-        return Orders;
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        _logger.LogInformation("Received order with {Count} items", request.Order.Items.Count);
+
+        return Ok(new { message = "Order received successfully" });
     }
 }
