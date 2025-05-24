@@ -30,6 +30,18 @@ public class DBSchemaInitializer
 
             command.ExecuteNonQuery();
             _logger.LogInformation("Items table initialized successfully");
+
+            command.CommandText = @"
+                CREATE TABLE IF NOT EXISTS Vat (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    ItemId INTEGER NOT NULL,
+                    Rate DECIMAL NOT NULL,
+                    StartDate TEXT NOT NULL,
+                    CONSTRAINT FK_Vat_Items FOREIGN KEY (ItemId) REFERENCES Items(Id)
+                );";
+
+            command.ExecuteNonQuery();
+            _logger.LogInformation("Vat table initialized successfully");
         }
         catch (Exception ex)
         {
