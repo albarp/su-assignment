@@ -43,6 +43,24 @@ public class DBSchemaInitializer
                         Price DECIMAL NOT NULL,
                         StartDate TEXT NOT NULL,
                         CONSTRAINT FK_Pricing_Items FOREIGN KEY (ItemId) REFERENCES Items(Id)
+                    )"),
+                (Name: "Orders", Sql: @"
+                    CREATE TABLE IF NOT EXISTS Orders (
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        Total DECIMAL NOT NULL,
+                        TotalVat DECIMAL NOT NULL,
+                        Date TEXT NOT NULL
+                    )"),
+                (Name: "OrderItems", Sql: @"
+                    CREATE TABLE IF NOT EXISTS OrderItems (
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        OrderId INTEGER NOT NULL,
+                        ItemId INTEGER NOT NULL,
+                        Quantity INTEGER NOT NULL,
+                        Price DECIMAL NOT NULL,
+                        VatValue DECIMAL NOT NULL,
+                        CONSTRAINT FK_OrderItems_Orders FOREIGN KEY (OrderId) REFERENCES Orders(Id),
+                        CONSTRAINT FK_OrderItems_Items FOREIGN KEY (ItemId) REFERENCES Items(Id)
                     )")
             };
 
