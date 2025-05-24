@@ -1,3 +1,5 @@
+using PurchaseCart.DataAccessSqlite;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +9,22 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add SQLite services
+var environment = builder.Environment.EnvironmentName.ToLower();
+// TODO: move to configuration
+var connectionString = $"Data Source=purchasecart.{environment}.db";
+
+builder.Services.AddSingleton<DBInitializer>(sp => 
+    new DBInitializer(connectionString, sp.GetRequiredService<ILogger<DBInitializer>>()));
+
 var app = builder.Build();
+
+// Initialize the database
+using (var scope = app.Services.CreateScope())
+{
+    var initializer = scope.ServiceProvider.GetRequiredService<DBInitializer>();
+    initializer.Initialize();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
