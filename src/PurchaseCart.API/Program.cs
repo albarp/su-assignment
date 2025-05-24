@@ -1,4 +1,6 @@
 using PurchaseCart.DataAccessSqlite;
+using PurchaseCart.Domain.Interfaces;
+using PurchaseCart.Domain.Logic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,13 @@ builder.Services.AddSingleton<DBSchemaInitializer>(sp =>
 
 builder.Services.AddSingleton<DBSeeder>(sp => 
     new DBSeeder(connectionString, sp.GetRequiredService<ILogger<DBSeeder>>()));
+
+// Register repositories
+builder.Services.AddScoped<IItemRepository>(sp => new ItemRepository(connectionString));
+builder.Services.AddScoped<IOrderRepository>(sp => new OrderRepository(connectionString));
+
+// Register business logic
+builder.Services.AddScoped<OrderLogic>();
 
 var app = builder.Build();
 
