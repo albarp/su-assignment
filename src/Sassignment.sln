@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchaseCart.Domain", "Purc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchaseCart.DataAccessSqlite", "PurchaseCart.DataAccessSqlite\PurchaseCart.DataAccessSqlite.csproj", "{04C7E7D4-FC88-4F97-A981-B2B03F0276C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchaseCart.IntegrationTests", "PurchaseCart.IntegrationTests\PurchaseCart.IntegrationTests.csproj", "{72F4C7D4-94FD-419E-B61C-3CFE42021B7F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchaseCart.Tests", "PurchaseCart.Tests\PurchaseCart.Tests.csproj", "{72F4C7D4-94FD-419E-B61C-3CFE42021B7F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -66,7 +66,7 @@ public class ItemRepositoryTests : IDisposable
             var itemIds = new[] { 1, 2 };
 
             // Act
-            var results = await _repository.GetAllPricesAsync(itemIds);
+            var results = await _repository.GetPricesAndVatsAsync(itemIds);
 
             // Assert
             Assert.Equal(2, results.Length);
@@ -96,7 +96,7 @@ public class ItemRepositoryTests : IDisposable
     public async Task GetAllPricesAsync_WithEmptyArray_ReturnsEmptyArray()
     {
         // Act
-        var results = await _repository.GetAllPricesAsync(Array.Empty<int>());
+        var results = await _repository.GetPricesAndVatsAsync(Array.Empty<int>());
 
         // Assert
         Assert.Empty(results);
@@ -136,7 +136,7 @@ public class ItemRepositoryTests : IDisposable
             var itemIds = new[] { 1 };
 
             // Act
-            var results = await _repository.GetAllPricesAsync(itemIds);
+            var results = await _repository.GetPricesAndVatsAsync(itemIds);
 
             // Assert
             Assert.Single(results);
