@@ -29,47 +29,38 @@ public class ItemRepositoryTests : IDisposable
         var initializer = new DBSchemaInitializer(_connectionString, _logger);
         initializer.Initialize();
         
-        // Seed test data
-        SeedTestData();
-        
         _repository = new ItemRepository(_connectionString);
-    }
-
-    private void SeedTestData()
-    {
-        // Insert test items
-        var insertItems = @"
-            INSERT INTO Items (Id, Description) VALUES 
-            (1, 'Test Item 1'),
-            (2, 'Test Item 2')";
-        
-        using var command = _connection.CreateCommand();
-        command.CommandText = insertItems;
-        command.ExecuteNonQuery();
-
-        // Insert VAT rates
-        var insertVat = @"
-            INSERT INTO Vat (ItemId, Rate, StartDate) VALUES 
-            (1, 0.20, '2024-01-01'),
-            (2, 0.10, '2024-01-01')";
-        
-        command.CommandText = insertVat;
-        command.ExecuteNonQuery();
-
-        // Insert pricing
-        var insertPricing = @"
-            INSERT INTO Pricing (ItemId, Price, StartDate) VALUES 
-            (1, 100.00, '2024-01-01'),
-            (2, 200.00, '2024-01-01')";
-        
-        command.CommandText = insertPricing;
-        command.ExecuteNonQuery();
     }
 
     [Fact]
     public async Task GetAllPricesAsync_ReturnsCorrectPrices()
     {
         // Arrange
+        var insertItems = @"
+            INSERT INTO Items (Id, Description) VALUES 
+            (1, 'Test Item 1'),
+            (2, 'Test Item 2')";
+        
+        var insertVat = @"
+            INSERT INTO Vat (ItemId, Rate, StartDate) VALUES 
+            (1, 0.20, '2024-01-01'),
+            (2, 0.10, '2024-01-01')";
+        
+        var insertPricing = @"
+            INSERT INTO Pricing (ItemId, Price, StartDate) VALUES 
+            (1, 100.00, '2024-01-01'),
+            (2, 200.00, '2024-01-01')";
+        
+        using var command = _connection.CreateCommand();
+        command.CommandText = insertItems;
+        command.ExecuteNonQuery();
+        
+        command.CommandText = insertVat;
+        command.ExecuteNonQuery();
+        
+        command.CommandText = insertPricing;
+        command.ExecuteNonQuery();
+
         var itemIds = new[] { 1, 2 };
 
         // Act
@@ -101,20 +92,29 @@ public class ItemRepositoryTests : IDisposable
     public async Task GetAllPricesAsync_WithMultiplePriceChanges_ReturnsLatestPrices()
     {
         // Arrange
-        var insertMultiplePrices = @"
+        var insertItems = @"
+            INSERT INTO Items (Id, Description) VALUES 
+            (1, 'Test Item 1')";
+        
+        var insertVat = @"
+            INSERT INTO Vat (ItemId, Rate, StartDate) VALUES 
+            (1, 0.20, '2024-01-01'),
+            (1, 0.25, '2024-02-01')";
+        
+        var insertPricing = @"
             INSERT INTO Pricing (ItemId, Price, StartDate) VALUES 
+            (1, 100.00, '2024-01-01'),
             (1, 150.00, '2024-02-01'),
             (1, 120.00, '2024-03-01')";
         
-        var insertMultipleVat = @"
-            INSERT INTO Vat (ItemId, Rate, StartDate) VALUES 
-            (1, 0.25, '2024-02-01')";
-        
         using var command = _connection.CreateCommand();
-        command.CommandText = insertMultiplePrices;
+        command.CommandText = insertItems;
         command.ExecuteNonQuery();
         
-        command.CommandText = insertMultipleVat;
+        command.CommandText = insertVat;
+        command.ExecuteNonQuery();
+        
+        command.CommandText = insertPricing;
         command.ExecuteNonQuery();
 
         var itemIds = new[] { 1 };

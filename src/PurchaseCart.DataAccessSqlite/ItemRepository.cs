@@ -25,21 +25,42 @@ public class ItemRepository : IItemRepository
         var query = @"
             WITH LatestPrices AS (
                 SELECT 
-                    p.ItemId,
-                    p.Price,
-                    v.Rate as VatRate,
-                    ROW_NUMBER() OVER (PARTITION BY p.ItemId ORDER BY p.StartDate DESC) as rn
-                FROM Pricing p
-                INNER JOIN Vat v ON p.ItemId = v.ItemId
-                WHERE p.ItemId IN ({0})
-                AND v.StartDate <= p.StartDate
+                    ItemId,
+                    Price,
+                    PriceDate
+                FROM (
+                    SELECT 
+                        p.ItemId,
+                        p.Price,
+                        p.StartDate as PriceDate,
+                        ROW_NUMBER() OVER (PARTITION BY p.ItemId ORDER BY p.StartDate DESC) as rn
+                    FROM Pricing p
+                    WHERE p.ItemId IN ({0})
+                ) ranked
+                WHERE rn = 1
+            ),
+            LatestVat AS (
+                SELECT 
+                    ItemId,
+                    VatRate,
+                    VatDate
+                FROM (
+                    SELECT 
+                        v.ItemId,
+                        v.Rate as VatRate,
+                        v.StartDate as VatDate,
+                        ROW_NUMBER() OVER (PARTITION BY v.ItemId ORDER BY v.StartDate DESC) as rn
+                    FROM Vat v
+                    WHERE v.ItemId IN ({0})
+                ) ranked
+                WHERE rn = 1
             )
             SELECT 
-                ItemId as Id,
-                Price,
-                VatRate
-            FROM LatestPrices
-            WHERE rn = 1";
+                lp.ItemId as Id,
+                lp.Price,
+                lv.VatRate
+            FROM LatestPrices lp
+            INNER JOIN LatestVat lv ON lp.ItemId = lv.ItemId";
 
         // Create the parameter placeholders for the IN clause
         var parameters = string.Join(",", ids.Select((_, i) => $"@id{i}"));
