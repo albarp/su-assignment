@@ -1,7 +1,7 @@
 using System.Data;
 using Dapper;
 using Microsoft.Data.Sqlite;
-using PurchaseCart.Domain;
+using PurchaseCart.Domain.Entities;
 using PurchaseCart.Domain.Interfaces;
 
 namespace PurchaseCart.DataAccessSqlite;

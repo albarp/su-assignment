@@ -1,7 +1,7 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using PurchaseCart.DataAccessSqlite;
-using PurchaseCart.Domain;
+using PurchaseCart.Domain.Entities;
 using Xunit;
 using Dapper;
 

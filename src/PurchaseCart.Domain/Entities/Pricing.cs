@@ -1,4 +1,4 @@
-namespace PurchaseCart.Domain;
+namespace PurchaseCart.Domain.Entities;
 
 public class Pricing
 {

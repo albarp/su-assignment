@@ -1,6 +1,6 @@
 namespace PurchaseCart.Domain.Logic;
 
-using PurchaseCart.Domain.Entities;
+using PurchaseCart.Domain.Requests;
 using PurchaseCart.Domain.Interfaces;
 
 public class OrderLogic {
@@ -12,7 +12,7 @@ public class OrderLogic {
         _orderRepository = orderRepository;
     }
 
-    public async Task<Domain.Order?> CalcAndSave(OrderRequest orderRequest) {
+    public async Task<Domain.Entities.Order?> CalcAndSave(OrderRequest orderRequest) {
         if (orderRequest?.Order?.Items == null || !orderRequest.Order.Items.Any())
         {
             return null;
@@ -32,7 +32,7 @@ public class OrderLogic {
         }
 
         // Create order items with calculated prices and VAT
-        var orderItems = new List<Domain.OrderItem>();
+        var orderItems = new List<Domain.Entities.OrderItem>();
         decimal totalOrderPrice = 0;
         decimal totalOrderVat = 0;
 
@@ -44,7 +44,7 @@ public class OrderLogic {
             var itemTotalPrice = itemPrice.Price * requestItem.Quantity;
             var itemVatValue = itemTotalPrice * itemPrice.VatRate;
 
-            orderItems.Add(new Domain.OrderItem
+            orderItems.Add(new Domain.Entities.OrderItem
             {
                 ItemId = requestItem.ProductId,
                 Quantity = requestItem.Quantity,
@@ -57,7 +57,7 @@ public class OrderLogic {
         }
 
         // Create and save the order
-        var order = new Domain.Order
+        var order = new Domain.Entities.Order
         {
             Total = totalOrderPrice,
             TotalVat = totalOrderVat,
