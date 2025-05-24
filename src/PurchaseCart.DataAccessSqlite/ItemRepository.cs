@@ -13,7 +13,7 @@ public class ItemRepository : IItemRepository
         _connectionString = connectionString;
     }
 
-    public async Task<ItemOrderPrice[]> GetAllPricesAsync(int[] ids)
+    public async Task<ItemOrderPrice[]> GetPricesAndVatsAsync(int[] ids)
     {
         if (ids == null || ids.Length == 0)
             return Array.Empty<ItemOrderPrice>();
