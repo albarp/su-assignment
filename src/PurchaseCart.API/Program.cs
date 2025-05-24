@@ -14,15 +14,15 @@ var environment = builder.Environment.EnvironmentName.ToLower();
 // TODO: move to configuration
 var connectionString = $"Data Source=purchasecart.{environment}.db";
 
-builder.Services.AddSingleton<DBInitializer>(sp => 
-    new DBInitializer(connectionString, sp.GetRequiredService<ILogger<DBInitializer>>()));
+builder.Services.AddSingleton<DBSchemaInitializer>(sp => 
+    new DBSchemaInitializer(connectionString, sp.GetRequiredService<ILogger<DBSchemaInitializer>>()));
 
 var app = builder.Build();
 
 // Initialize the database
 using (var scope = app.Services.CreateScope())
 {
-    var initializer = scope.ServiceProvider.GetRequiredService<DBInitializer>();
+    var initializer = scope.ServiceProvider.GetRequiredService<DBSchemaInitializer>();
     initializer.Initialize();
 }
 
