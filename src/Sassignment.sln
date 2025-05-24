@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchaseCart.Domain", "Purc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchaseCart.DataAccessSqlite", "PurchaseCart.DataAccessSqlite\PurchaseCart.DataAccessSqlite.csproj", "{04C7E7D4-FC88-4F97-A981-B2B03F0276C8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchaseCart.IntegrationTests", "PurchaseCart.IntegrationTests\PurchaseCart.IntegrationTests.csproj", "{72F4C7D4-94FD-419E-B61C-3CFE42021B7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{04C7E7D4-FC88-4F97-A981-B2B03F0276C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04C7E7D4-FC88-4F97-A981-B2B03F0276C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04C7E7D4-FC88-4F97-A981-B2B03F0276C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72F4C7D4-94FD-419E-B61C-3CFE42021B7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72F4C7D4-94FD-419E-B61C-3CFE42021B7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72F4C7D4-94FD-419E-B61C-3CFE42021B7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72F4C7D4-94FD-419E-B61C-3CFE42021B7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
