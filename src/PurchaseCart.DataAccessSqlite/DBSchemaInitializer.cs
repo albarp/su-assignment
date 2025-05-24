@@ -21,31 +21,55 @@ public class DBSchemaInitializer
             using var connection = new SqliteConnection(_connectionString);
             connection.Open();
 
-            var command = connection.CreateCommand();
-            command.CommandText = @"
-                CREATE TABLE IF NOT EXISTS Items (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    Description TEXT NOT NULL
-                );";
+            var tableDefinitions = new[]
+            {
+                (Name: "Items", Sql: @"
+                    CREATE TABLE IF NOT EXISTS Items (
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        Description TEXT NOT NULL
+                    )"),
+                (Name: "Vat", Sql: @"
+                    CREATE TABLE IF NOT EXISTS Vat (
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        ItemId INTEGER NOT NULL,
+                        Rate DECIMAL NOT NULL,
+                        StartDate TEXT NOT NULL,
+                        CONSTRAINT FK_Vat_Items FOREIGN KEY (ItemId) REFERENCES Items(Id)
+                    )"),
+                (Name: "Pricing", Sql: @"
+                    CREATE TABLE IF NOT EXISTS Pricing (
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        ItemId INTEGER NOT NULL,
+                        Price DECIMAL NOT NULL,
+                        StartDate TEXT NOT NULL,
+                        CONSTRAINT FK_Pricing_Items FOREIGN KEY (ItemId) REFERENCES Items(Id)
+                    )")
+            };
 
-            command.ExecuteNonQuery();
-            _logger.LogInformation("Items table initialized successfully");
-
-            command.CommandText = @"
-                CREATE TABLE IF NOT EXISTS Vat (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    ItemId INTEGER NOT NULL,
-                    Rate DECIMAL NOT NULL,
-                    StartDate TEXT NOT NULL,
-                    CONSTRAINT FK_Vat_Items FOREIGN KEY (ItemId) REFERENCES Items(Id)
-                );";
-
-            command.ExecuteNonQuery();
-            _logger.LogInformation("Vat table initialized successfully");
+            foreach (var (tableName, sql) in tableDefinitions)
+            {
+                CreateTable(connection, tableName, sql);
+            }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error initializing Items table");
+            _logger.LogError(ex, "Error initializing database schema");
+            throw;
+        }
+    }
+
+    private void CreateTable(SqliteConnection connection, string tableName, string sql)
+    {
+        try
+        {
+            var command = connection.CreateCommand();
+            command.CommandText = sql;
+            command.ExecuteNonQuery();
+            _logger.LogInformation("{TableName} table initialized successfully", tableName);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error initializing {TableName} table", tableName);
             throw;
         }
     }
