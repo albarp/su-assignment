@@ -61,21 +61,35 @@ public class ItemRepositoryTests : IDisposable
         command.CommandText = insertPricing;
         command.ExecuteNonQuery();
 
-        var itemIds = new[] { 1, 2 };
+        try
+        {
+            var itemIds = new[] { 1, 2 };
 
-        // Act
-        var results = await _repository.GetAllPricesAsync(itemIds);
+            // Act
+            var results = await _repository.GetAllPricesAsync(itemIds);
 
-        // Assert
-        Assert.Equal(2, results.Length);
-        
-        var item1 = results.First(r => r.Id == 1);
-        Assert.Equal(100.00m, item1.Price);
-        Assert.Equal(0.20m, item1.VatRate);
+            // Assert
+            Assert.Equal(2, results.Length);
+            
+            var item1 = results.First(r => r.Id == 1);
+            Assert.Equal(100.00m, item1.Price);
+            Assert.Equal(0.20m, item1.VatRate);
 
-        var item2 = results.First(r => r.Id == 2);
-        Assert.Equal(200.00m, item2.Price);
-        Assert.Equal(0.10m, item2.VatRate);
+            var item2 = results.First(r => r.Id == 2);
+            Assert.Equal(200.00m, item2.Price);
+            Assert.Equal(0.10m, item2.VatRate);
+        }
+        finally
+        {
+            // Clean up test data
+            var cleanup = @"
+                DELETE FROM Pricing;
+                DELETE FROM Vat;
+                DELETE FROM Items;";
+            
+            command.CommandText = cleanup;
+            command.ExecuteNonQuery();
+        }
     }
 
     [Fact]
@@ -117,17 +131,31 @@ public class ItemRepositoryTests : IDisposable
         command.CommandText = insertPricing;
         command.ExecuteNonQuery();
 
-        var itemIds = new[] { 1 };
+        try
+        {
+            var itemIds = new[] { 1 };
 
-        // Act
-        var results = await _repository.GetAllPricesAsync(itemIds);
+            // Act
+            var results = await _repository.GetAllPricesAsync(itemIds);
 
-        // Assert
-        Assert.Single(results);
-        var item = results[0];
-        Assert.Equal(1, item.Id);
-        Assert.Equal(120.00m, item.Price);  // Should get the latest price from 2024-03-01
-        Assert.Equal(0.25m, item.VatRate);  // Should get the latest VAT rate from 2024-02-01
+            // Assert
+            Assert.Single(results);
+            var item = results[0];
+            Assert.Equal(1, item.Id);
+            Assert.Equal(120.00m, item.Price);  // Should get the latest price from 2024-03-01
+            Assert.Equal(0.25m, item.VatRate);  // Should get the latest VAT rate from 2024-02-01
+        }
+        finally
+        {
+            // Clean up test data
+            var cleanup = @"
+                DELETE FROM Pricing;
+                DELETE FROM Vat;
+                DELETE FROM Items;";
+            
+            command.CommandText = cleanup;
+            command.ExecuteNonQuery();
+        }
     }
 
     public void Dispose()
