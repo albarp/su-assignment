@@ -17,6 +17,9 @@ var connectionString = $"Data Source=purchasecart.{environment}.db";
 builder.Services.AddSingleton<DBSchemaInitializer>(sp => 
     new DBSchemaInitializer(connectionString, sp.GetRequiredService<ILogger<DBSchemaInitializer>>()));
 
+builder.Services.AddSingleton<DBSeeder>(sp => 
+    new DBSeeder(connectionString, sp.GetRequiredService<ILogger<DBSeeder>>()));
+
 var app = builder.Build();
 
 // Initialize the database
@@ -24,6 +27,9 @@ using (var scope = app.Services.CreateScope())
 {
     var initializer = scope.ServiceProvider.GetRequiredService<DBSchemaInitializer>();
     initializer.Initialize();
+
+    var seeder = scope.ServiceProvider.GetRequiredService<DBSeeder>();
+    seeder.Seed();
 }
 
 // Configure the HTTP request pipeline.
