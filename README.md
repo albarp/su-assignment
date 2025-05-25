@@ -5,8 +5,8 @@
 Clone the repo and cd into the project directory:
 
 ```bash
-git clone https://github.com/albarp/s-assignment.git
-cd s-assignment
+git clone https://github.com/albarp/su-assignment.git
+cd su-assignment
 ```
 
 Build the docker image:
