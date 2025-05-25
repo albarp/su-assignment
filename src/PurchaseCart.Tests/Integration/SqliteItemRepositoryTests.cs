@@ -34,7 +34,7 @@ public class ItemRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task GetAllPricesAsync_ReturnsCorrectPrices()
+    public async Task GetPricesAndVatsAsync_ReturnsCorrectPrices()
     {
         // Arrange
         var insertItems = @"
@@ -94,7 +94,7 @@ public class ItemRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task GetAllPricesAsync_WithEmptyArray_ReturnsEmptyArray()
+    public async Task GetPricesAndVatsAsync_WithEmptyArray_ReturnsEmptyArray()
     {
         // Act
         var results = await _repository.GetPricesAndVatsAsync(Array.Empty<int>());
@@ -104,7 +104,7 @@ public class ItemRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task GetAllPricesAsync_WithMultiplePriceChanges_ReturnsLatestPrices()
+    public async Task GetPricesAndVatsAsync_WithMultiplePriceChanges_ReturnsLatestPrices()
     {
         // Arrange
         var insertItems = @"
