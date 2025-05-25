@@ -108,6 +108,8 @@ Both unit and integration tests are under the same project for simplicity, but t
 Note on API Response Format:
 The API returns numerical values (prices and VAT) as floating-point numbers without forced decimal places. For example, a price might be returned as `12.5` instead of `12.50`. This is a deliberate design choice to maintain the values as numbers rather than strings, which is more appropriate for numerical calculations and data processing. 
 
+Please ignore docker-compose files, they are used to setup y dev environment
+
 ## Layers
 
 ### Controller (PurchaseCart.API)
