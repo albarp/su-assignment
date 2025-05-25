@@ -23,11 +23,15 @@ chmod +x scripts/tests.sh
 chmod +x scripts/run.sh
 ```
 
-Execute the three scripts in a docker container run from the build image:
+Execute these three scripts, in oder, in a docker container run from the build image:
 
 ```bash
 docker run -v $(pwd):/mnt -p 9090:9090 -w /mnt mytest ./scripts/build.sh
+```
+```bash
 docker run -v $(pwd):/mnt -p 9090:9090 -w /mnt mytest ./scripts/tests.sh
+```
+```bash
 docker run -v $(pwd):/mnt -p 9090:9090 -w /mnt mytest ./scripts/run.sh
 ```
 
