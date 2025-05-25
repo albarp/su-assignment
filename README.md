@@ -159,3 +159,9 @@ The current implementation uses scripts for build, test, and release. In a produ
 - Move environment variables out of the Dockerfile
 - Provide environment variables at runtime through the container orchestrator
 
+## Logging Considerations
+
+The application uses Microsoft.Extensions.Logging (ILogger) as the standard logging framework. While basic logging is implemented, there are several areas that could be improved for a production environment:
+- Propagate the Trce ID, provided ASP.NET Core built in logging to the application logger
+- Extend logs for the Application Logic and Data Access layers
+
