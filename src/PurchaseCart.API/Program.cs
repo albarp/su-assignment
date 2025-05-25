@@ -16,6 +16,7 @@ var environment = builder.Environment.EnvironmentName.ToLower();
 // TODO: move to configuration
 var connectionString = $"Data Source=purchasecart.{environment}.db";
 
+// TODO: can be simplified?
 builder.Services.AddSingleton<DBSchemaInitializer>(sp => 
     new DBSchemaInitializer(connectionString, sp.GetRequiredService<ILogger<DBSchemaInitializer>>()));
 
