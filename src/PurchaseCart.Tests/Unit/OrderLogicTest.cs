@@ -77,7 +77,7 @@ public class OrderLogicTests
         {
             Items = new List<Domain.Entities.OrderItem>()
         };
-        // TODO: it doesn't test the returned order id properly
+
         _mockOrderRepository
             .Setup(repo => repo.Save(It.IsAny<Domain.Entities.Order>()))
             .Callback<Domain.Entities.Order>(order => 

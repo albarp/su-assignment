@@ -47,7 +47,7 @@ public class OrderController : ControllerBase
             
             if (order == null)
             {
-                return BadRequest("Invalid order request - no items provided");
+                return BadRequest("Invalid order request - save failed");
             }
 
             // Map domain model to response model
