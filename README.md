@@ -5,7 +5,7 @@
 Clone the repo and cd into the project directory:
 
 ```bash
-git clone https://github.com/albarp/su-assignment.git
+git clone https://github.com/albarp/su-assignment.git &&
 cd su-assignment
 ```
 
